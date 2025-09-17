@@ -63,6 +63,8 @@
       font-size: 12px;
       color: #666;
     }
+
+    /* Ajustes para telas pequenas */
     @media (max-width: 480px) {
       h1 {
         font-size: 18px;
@@ -81,7 +83,7 @@
       <!-- Etapa 1 -->
       <div class="step active">
         <h1>Oi, Julie! 🐶</h1>
-        <p>Estou organizando um passeio especial!</p>
+        <p>Estou organizando um passeio especial só pra você.</p>
         <p>Benefícios incluídos:</p>
         <p>🎾 Busca à bolinha</p>
         <p>🌳 Caça aos melhores gravetos</p>
@@ -109,9 +111,6 @@
         <h1>Resumo do convite 🐶</h1>
         <p id="resumo"></p>
         <button type="submit">Enviar</button>
-        <p style="font-size: 12px; color: #666; margin-top: 8px;">
-          Pode levar alguns segundos...checando os gravetos 🌳🐾
-        </p>
       </div>
       
       <!-- Mensagem final -->
@@ -134,6 +133,7 @@
       steps[currentStep].classList.add("active");
 
       if (currentStep === 3) {
+        // Atualiza resumo
         const data = document.querySelector("[name='data']").value;
         const hora = document.querySelector("[name='hora']").value;
         const local = document.querySelector("[name='local']").value;
@@ -147,24 +147,13 @@
 
     form.addEventListener('submit', e => {
       e.preventDefault();
-
-      // muda botão ao enviar
-      const submitBtn = steps[3].querySelector("button[type='submit']");
-      submitBtn.disabled = true;
-      submitBtn.innerText = "⏳ Segura a coleira...";
-
       fetch(scriptURL, { method: 'POST', body: new FormData(form)})
         .then(() => {
           steps[3].classList.remove("active");
           document.getElementById("final-msg").classList.add("active");
         })
-        .catch(error => {
-          alert("Erro: " + error.message);
-          submitBtn.disabled = false;
-          submitBtn.innerText = "Enviar";
-        });
+        .catch(error => alert("Erro: " + error.message))
     });
   </script>
 </body>
 </html>
-
