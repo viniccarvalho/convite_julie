@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Convite Julie 🐶</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f9f9f9;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+      width: 380px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background: #fa5300;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #d94700;
+    }
+    .step {
+      display: none;
+    }
+    .step.active {
+      display: block;
+    }
+    footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="invite-form" name="invite-form">
+      
+      <!-- Etapa 1 -->
+      <div class="step active">
+        <h1>Oi, Julie! 🐶</h1>
+        <p>Estou organizando um passeio especial só pra você.</p>
+        <p>Benefícios incluídos:</p>
+        <p>🎾 Busca à bolinha</p>
+        <p>🌳 Caça aos melhores gravetos</p>
+        <p>🤗 Muito carinho garantido</p>
+        <button type="button" onclick="nextStep()">Próximo ➡️</button>
+      </div>
+      
+      <!-- Etapa 2 -->
+      <div class="step">
+        <h1>Qual o melhor dia e horário?</h1>
+        <input type="date" name="data" required>
+        <input type="time" name="hora" required>
+        <button type="button" onclick="nextStep()">Próximo ➡️</button>
+      </div>
+      
+      <!-- Etapa 3 -->
+      <div class="step">
+        <h1>Onde vamos passear?</h1>
+        <input type="text" name="local" placeholder="Ex.: Parque Ibirapuera, Praça perto de casa" required>
+        <button type="button" onclick="nextStep()">Próximo ➡️</button>
+      </div>
+      
+      <!-- Etapa 4 -->
+      <div class="step">
+        <h1>Resumo do convite 🐶</h1>
+        <p id="resumo"></p>
+        <button type="submit">Enviar</button>
+      </div>
+      
+      <!-- Mensagem final -->
+      <div class="step" id="final-msg">
+        <h1>Obrigado! 🐾</h1>
+        <p>O setor responsável entrará em contato em breve.</p>
+      </div>
+      
+    </form>
+    <footer>Todos os direitos reservados à Julie®</footer>
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll(".step");
+    let currentStep = 0;
+
+    function nextStep() {
+      steps[currentStep].classList.remove("active");
+      currentStep++;
+      steps[currentStep].classList.add("active");
+
+      if (currentStep === 3) {
+        // Atualiza resumo
+        const data = document.querySelector("[name='data']").value;
+        const hora = document.querySelector("[name='hora']").value;
+        const local = document.querySelector("[name='local']").value;
+        document.getElementById("resumo").innerHTML =
+          `<b>Dia:</b> ${data}<br><b>Hora:</b> ${hora}<br><b>Local:</b> ${local}`;
+      }
+    }
+
+    const scriptURL = "https://script.google.com/macros/s/AKfycbya4CFyPh2bUr7IpxmwlcKmWuoXsyQuzgsbUhUilMNGZ6WC02lVkHAmg6blVYAFi-c3Vw/exec"; 
+    const form = document.forms['invite-form'];
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(() => {
+          steps[3].classList.remove("active");
+          document.getElementById("final-msg").classList.add("active");
+        })
+        .catch(error => alert("Erro: " + error.message))
+    });
+  </script>
+</body>
+</html>
